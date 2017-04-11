@@ -19,8 +19,9 @@ func main() {
 
   userID := ""
 
-  // embd.InitGPIO()
-  // defer embd.CloseGPIO()
+  embd.InitGPIO()
+  defer embd.CloseGPIO()
+  pin, _ := embd.NewDigitalPin(10)
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
@@ -40,14 +41,21 @@ func main() {
       if(botMessage == "open sesame" && messageToBot) {
         rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
 
-        embd.InitGPIO()
+        pin.SetDirection(embd.Out)
+        pin.Write(embd.Low)
 
-        embd.SetDirection(4, embd.Out)
-        embd.DigitalWrite(4, embd.Low)
+        time.Sleep(1000 * time.Millisecond)
 
-        time.Sleep(2000 * time.Millisecond)
+        pin.Write(embd.High)
 
-        embd.CloseGPIO()
+        // embd.InitGPIO()
+
+        // embd.SetDirection(4, embd.Out)
+        // embd.DigitalWrite(4, embd.Low)
+
+        // time.Sleep(2000 * time.Millisecond)
+
+        // embd.CloseGPIO()
         // embd.DigitalWrite(4, embd.Low)
       }
 
