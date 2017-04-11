@@ -43,7 +43,7 @@ func main() {
         embd.InitGPIO()
 
         embd.SetDirection(4, embd.Out)
-        embd.DigitalWrite(4, embd.High)
+        embd.DigitalWrite(4, embd.Low)
 
         time.Sleep(1000 * time.Millisecond)
 
