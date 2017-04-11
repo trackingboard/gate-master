@@ -40,7 +40,7 @@ func main() {
         rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
       }
 
-      if((botMessage == "open sesame" && messageToBot) || botMessage == "go go gadget gate") {
+      if((botMessage == "open sesame" && messageToBot) || botMessage == "go go gadget gate" || botMessage == "oom") {
         rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
 
         pin.Write(embd.Low)
