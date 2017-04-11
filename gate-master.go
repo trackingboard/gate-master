@@ -52,6 +52,9 @@ func main() {
         }
         if(botMessage == "restart") {
           rtm.SendMessage(rtm.NewOutgoingMessage("Restarting/updating central control units...", ev.Channel))
+
+          time.Sleep(1000 * time.Millisecond)
+
           return
         }
       } else {
