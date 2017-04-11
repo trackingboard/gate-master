@@ -22,6 +22,8 @@ func main() {
   embd.InitGPIO()
   defer embd.CloseGPIO()
   pin, _ := embd.NewDigitalPin(4)
+  pin.SetDirection(embd.Out)
+  pin.Write(embd.Low)
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
@@ -41,7 +43,6 @@ func main() {
       if(botMessage == "open sesame" && messageToBot) {
         rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
 
-        pin.SetDirection(embd.Out)
         pin.Write(embd.High)
 
         time.Sleep(1000 * time.Millisecond)
