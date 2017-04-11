@@ -11,6 +11,12 @@ import (
   _ "github.com/kidoman/embd/host/rpi"
 )
 
+// MentionlessMagicWords contains all the words to open gate without mentioning bot
+var MentionlessMagicWords = []string { "go go gadget gate", "oom" }
+
+// MagicWords contains all the words to open gate if mentioning bot
+var MagicWords = []string { "open sesame" }
+
 func main() {
   api := slack.New(os.Getenv("SLACK_TOKEN"))
 
@@ -40,14 +46,14 @@ func main() {
         rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
       }
 
-      if((botMessage == "open sesame" && messageToBot) || botMessage == "go go gadget gate" || botMessage == "oom") {
-        rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
-
-        pin.Write(embd.Low)
-
-        time.Sleep(1000 * time.Millisecond)
-
-        pin.Write(embd.High)
+      if(messageToBot) {
+        if(contains(MagicWords, botMessage)) {
+          openGate(pin, rtm, ev)
+        }
+      } else {
+        if(contains(MentionlessMagicWords, botMessage)) {
+          openGate(pin, rtm, ev)
+        }
       }
 
     case *slack.InvalidAuthEvent:
@@ -59,4 +65,23 @@ func main() {
       // fmt.Printf("Unexpected: %v\n", msg.Data)
     }
   }
+}
+
+func openGate(pin embd.DigitalPin, rtm *slack.RTM, ev *slack.MessageEvent) {
+  rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
+
+  pin.Write(embd.Low)
+
+  time.Sleep(1000 * time.Millisecond)
+
+  pin.Write(embd.High)
+}
+
+func contains(s []string, e string) bool {
+  for _, a := range s {
+    if strings.ToLower(a) == strings.ToLower(e) {
+      return true
+    }
+  }
+  return false
 }
