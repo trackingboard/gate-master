@@ -20,7 +20,7 @@ func main() {
   userID := ""
 
   embd.InitGPIO()
-  defer embd.CloseGPIO()
+  // defer embd.CloseGPIO()
   pin, _ := embd.NewDigitalPin(10)
 
   for msg := range rtm.IncomingEvents {
@@ -42,11 +42,11 @@ func main() {
         rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
 
         pin.SetDirection(embd.Out)
-        pin.Write(embd.Low)
+        pin.Write(embd.High)
 
         time.Sleep(1000 * time.Millisecond)
 
-        pin.Write(embd.High)
+        pin.Write(embd.Low)
 
         // embd.InitGPIO()
 
