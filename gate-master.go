@@ -20,8 +20,8 @@ func main() {
   userID := ""
 
   embd.InitGPIO()
-  // defer embd.CloseGPIO()
-  pin, _ := embd.NewDigitalPin(10)
+  defer embd.CloseGPIO()
+  pin, _ := embd.NewDigitalPin(8)
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
