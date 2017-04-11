@@ -5,6 +5,7 @@ import (
   "os"
   "strings"
   "github.com/nlopes/slack"
+  "github.com/stianeikeland/go-rpio"
 )
 
 func main() {
@@ -14,6 +15,10 @@ func main() {
   go rtm.ManageConnection()
 
   userID := ""
+
+  _ = rpio.Open()
+
+  pin := rpio.Pin(0)
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
@@ -28,6 +33,16 @@ func main() {
 
       if(botMessage == "ping" && messageToBot) {
         rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
+      }
+
+      if(botMessage == "switch on" && messageToBot) {
+        // rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
+        pin.High()
+      }
+
+      if(botMessage == "switch off" && messageToBot) {
+        // rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
+        pin.Low()
       }
 
     case *slack.InvalidAuthEvent:
