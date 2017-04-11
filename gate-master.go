@@ -50,7 +50,7 @@ func main() {
         if(contains(MagicWords, botMessage)) {
           openGate(pin, rtm, ev)
         }
-        if(ev.Text == "restart") {
+        if(botMessage == "restart") {
           return
         }
       } else {
