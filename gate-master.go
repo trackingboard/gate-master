@@ -19,8 +19,8 @@ func main() {
 
   userID := ""
 
-  embd.InitGPIO()
-  defer embd.CloseGPIO()
+  // embd.InitGPIO()
+  // defer embd.CloseGPIO()
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
@@ -38,13 +38,17 @@ func main() {
       }
 
       if(botMessage == "open sesame" && messageToBot) {
-        rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
+        rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
+
+        embd.InitGPIO()
+
         embd.SetDirection(4, embd.Out)
         embd.DigitalWrite(4, embd.High)
 
         time.Sleep(1000 * time.Millisecond)
 
-        embd.DigitalWrite(4, embd.Low)
+        embd.CloseGPIO()
+        // embd.DigitalWrite(4, embd.Low)
       }
 
     case *slack.InvalidAuthEvent:
