@@ -67,7 +67,7 @@ func main() {
   }
 }
 
-func openGate(pin embd.DigitalPin, rtm *slack.RTM, ev *slack.MessageEvent) {
+func openGate(pin *embd.DigitalPin, rtm *slack.RTM, ev *slack.MessageEvent) {
   rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
 
   pin.Write(embd.Low)
