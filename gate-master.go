@@ -8,7 +8,7 @@ import (
 
   "time"
   "github.com/kidoman/embd"
-  _ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
+  _ "github.com/kidoman/embd/host/rpi"
 )
 
 func main() {
@@ -40,7 +40,7 @@ func main() {
         rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
       }
 
-      if(botMessage == "open sesame" && messageToBot) {
+      if((botMessage == "open sesame" && messageToBot) || botMessage == "go go gadget gate") {
         rtm.SendMessage(rtm.NewOutgoingMessage("Opening gate...", ev.Channel))
 
         pin.Write(embd.Low)
@@ -48,16 +48,6 @@ func main() {
         time.Sleep(1000 * time.Millisecond)
 
         pin.Write(embd.High)
-
-        // embd.InitGPIO()
-
-        // embd.SetDirection(4, embd.Out)
-        // embd.DigitalWrite(4, embd.Low)
-
-        // time.Sleep(2000 * time.Millisecond)
-
-        // embd.CloseGPIO()
-        // embd.DigitalWrite(4, embd.Low)
       }
 
     case *slack.InvalidAuthEvent:
