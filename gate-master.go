@@ -18,7 +18,7 @@ func main() {
 
   _ = rpio.Open()
 
-  pin := rpio.Pin(0)
+  pin := rpio.Pin(8)
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
