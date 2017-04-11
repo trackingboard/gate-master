@@ -21,7 +21,7 @@ func main() {
 
   embd.InitGPIO()
   defer embd.CloseGPIO()
-  pin, _ := embd.NewDigitalPin(8)
+  pin, _ := embd.NewDigitalPin(4)
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
