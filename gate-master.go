@@ -40,11 +40,11 @@ func main() {
       if(botMessage == "open sesame" && messageToBot) {
         rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
         embd.SetDirection(4, embd.Out)
-        embd.DigitalWrite(4, embd.Low)
+        embd.DigitalWrite(4, embd.High)
 
         time.Sleep(1000 * time.Millisecond)
 
-        embd.DigitalWrite(4, embd.High)
+        embd.DigitalWrite(4, embd.Low)
       }
 
     case *slack.InvalidAuthEvent:
