@@ -5,7 +5,10 @@ import (
   "os"
   "strings"
   "github.com/nlopes/slack"
-  "github.com/stianeikeland/go-rpio"
+
+  "time"
+  "github.com/kidoman/embd"
+  _ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
 )
 
 func main() {
@@ -16,9 +19,8 @@ func main() {
 
   userID := ""
 
-  _ = rpio.Open()
-
-  pin := rpio.Pin(8)
+  embd.InitGPIO()
+  defer embd.CloseGPIO()
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
@@ -35,14 +37,14 @@ func main() {
         rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
       }
 
-      if(botMessage == "switch on" && messageToBot) {
-        // rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
-        pin.High()
-      }
+      if(botMessage == "open sesame" && messageToBot) {
+        rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
+        embd.SetDirection(4, embd.Out)
+        embd.DigitalWrite(4, embd.Low)
 
-      if(botMessage == "switch off" && messageToBot) {
-        // rtm.SendMessage(rtm.NewOutgoingMessage("pong", ev.Channel))
-        pin.Low()
+        time.Sleep(1000 * time.Millisecond)
+
+        embd.DigitalWrite(4, embd.High)
       }
 
     case *slack.InvalidAuthEvent:
