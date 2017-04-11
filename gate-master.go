@@ -51,6 +51,7 @@ func main() {
           openGate(pin, rtm, ev)
         }
         if(botMessage == "restart") {
+          rtm.SendMessage(rtm.NewOutgoingMessage("Restarting/updating central control units...", ev.Channel))
           return
         }
       } else {
